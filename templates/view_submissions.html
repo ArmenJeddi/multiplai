@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Submissions</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Submissions</h1>
+      <a href="{{ url_for('logout') }}" class="btn btn-secondary mb-3">Logout</a>
+      <h2>Due Diligence Submissions</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>PDF</th>
+            <th>Description</th>
+            <th>Date of Submission</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for submission in due_diligence_submissions %}
+          <tr>
+            <td>{{ submission.fullname }}</td>
+            <td>{{ submission.email }}</td>
+            <td><a href="{{ url_for('uploaded_file', filename=submission.pdf) }}" target="_blank">{{ submission.pdf }}</a></td>
+            <td>{{ submission.description }}</td>
+            <td>{{ submission.date_of_submission }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>Contact Submissions</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Question</th>
+            <th>Date of Submission</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for submission in contact_submissions %}
+          <tr>
+            <td>{{ submission.fullname }}</td>
+            <td>{{ submission.email }}</td>
+            <td>{{ submission.question }}</td>
+            <td>{{ submission.date_of_submission }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
