@@ -2,15 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path='.env.development')
 
 from models import db, DueDiligence, Contact
 from forms import DueDiligenceForm, ContactForm, LoginForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 
+# Ensure the upload folder exists
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
@@ -61,7 +65,7 @@ def uploaded_file(filename):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.username.data == 'multiplai' and form.password.data == 'kinghenrythe1st':
+        if form.username.data == os.environ.get('LOGIN_USERNAME') and form.password.data == os.environ.get('LOGIN_PASSWORD'):
             session['logged_in'] = True
             return redirect(url_for('view_submissions'))
         else:
