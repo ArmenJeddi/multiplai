@@ -26,7 +26,11 @@
           <tr>
             <td>{{ submission.fullname }}</td>
             <td>{{ submission.email }}</td>
-            <td><a href="{{ url_for('uploaded_file', filename=submission.pdf) }}" target="_blank">{{ submission.pdf }}</a></td>
+            <td>
+              {% for pdf in submission.pdf.split(',') %}
+              <a href="{{ url_for('uploaded_file', filename=pdf) }}" target="_blank">{{ pdf }}</a><br>
+              {% endfor %}
+            </td>
             <td>{{ submission.description }}</td>
             <td>{{ submission.date_of_submission }}</td>
           </tr>

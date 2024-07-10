@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FileField, PasswordField
+from wtforms import StringField, SubmitField, TextAreaField, MultipleFileField, PasswordField
 from wtforms.validators import DataRequired, Email
 
 class DueDiligenceForm(FlaskForm):
     fullname = StringField('Full Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    pdf = FileField('PDF', validators=[DataRequired()])
+    pdf = MultipleFileField('PDF', validators=[DataRequired()])  # Change here
     description = TextAreaField('Description', validators=[DataRequired()])
     submit_due_diligence = SubmitField("Let's do your due diligence")
 

@@ -6,7 +6,7 @@ class DueDiligence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), nullable=False)
-    pdf = db.Column(db.String(150), nullable=False)
+    pdf = db.Column(db.String(500), nullable=False)  # Increase length to handle multiple filenames
     description = db.Column(db.Text, nullable=False)
     date_of_submission = db.Column(db.DateTime, nullable=False)
 

@@ -29,14 +29,22 @@ def index():
     contact_form = ContactForm()
     
     if due_diligence_form.validate_on_submit() and due_diligence_form.submit_due_diligence.data:
-        pdf_file = due_diligence_form.pdf.data
-        filename = secure_filename(pdf_file.filename)
-        pdf_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        pdf_files = due_diligence_form.pdf.data
+        filenames = []
+
+        for pdf_file in pdf_files:
+            if pdf_file.filename != '':
+                filename = secure_filename(pdf_file.filename)
+                pdf_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                filenames.append(filename)
+        
+        # Convert filenames to a single string or a suitable format for storage
+        filenames_str = ','.join(filenames)
 
         due_diligence = DueDiligence(
             fullname=due_diligence_form.fullname.data,
             email=due_diligence_form.email.data,
-            pdf=filename,
+            pdf=filenames_str,  # Store the filenames string
             description=due_diligence_form.description.data,
             date_of_submission=datetime.utcnow()
         )
@@ -56,6 +64,7 @@ def index():
         return redirect(url_for('index'))
 
     return render_template('index.html', due_diligence_form=due_diligence_form, contact_form=contact_form)
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -85,6 +94,7 @@ def view_submissions():
     due_diligence_submissions = DueDiligence.query.all()
     contact_submissions = Contact.query.all()
     return render_template('view_submissions.html', due_diligence_submissions=due_diligence_submissions, contact_submissions=contact_submissions)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
